@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANFT 森林療癒步道自評表</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-50: #EAF3DE;
+    --green-100: #C0DD97;
+    --green-200: #97C459;
+    --green-400: #639922;
+    --green-600: #3B6D11;
+    --green-800: #27500A;
+    --green-900: #173404;
+    --teal-50: #E1F5EE;
+    --teal-100: #9FE1CB;
+    --teal-400: #1D9E75;
+    --teal-600: #0F6E56;
+    --teal-800: #085041;
+    --amber-50: #FAEEDA;
+    --amber-400: #BA7517;
+    --gray-50: #F1EFE8;
+    --gray-100: #D3D1C7;
+    --gray-200: #B4B2A9;
+    --gray-400: #888780;
+    --gray-600: #5F5E5A;
+    --gray-800: #444441;
+    --gray-900: #2C2C2A;
+    --bg: #f7f9f4;
+    --card: #ffffff;
+    --border: #d6e8c8;
+    --text: #1e2a14;
+    --muted: #5F5E5A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans TC', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, var(--green-800) 0%, var(--teal-600) 60%, var(--green-600) 100%);
+    padding: 3rem 2rem 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 1.5rem;
+    letter-spacing: 0.5px;
+  }
+
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    color: #fff;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero p {
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    max-width: 520px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  .score-legend {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .score-legend span {
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: rgba(255,255,255,0.9);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 100px;
+  }
+
+  .wrapper {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .progress-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .progress-bar label {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--gray-100);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--teal-400), var(--green-400));
+    border-radius: 3px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-score {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--green-800);
+    white-space: nowrap;
+    min-width: 60px;
+    text-align: right;
+  }
+
+  .section-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 2rem;
+    overflow: hidden;
+  }
+
+  .section-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+
+  .icon-green { background: var(--green-50); }
+  .icon-teal { background: var(--teal-50); }
+  .icon-amber { background: var(--amber-50); }
+
+  .section-header h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--green-900);
+  }
+
+  .section-header p {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 2px;
+    line-height: 1.5;
+  }
+
+  .section-score-badge {
+    margin-left: auto;
+    background: var(--green-50);
+    border: 1px solid var(--green-100);
+    border-radius: 100px;
+    padding: 4px 12px;
+    font-size: 13px;
+    color: var(--green-800);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .question-row {
+    padding: 1.1rem 1.5rem;
+    border-bottom: 1px solid #f0f4ea;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    transition: background 0.15s;
+  }
+
+  .question-row:last-child { border-bottom: none; }
+  .question-row:hover { background: #fafdf6; }
+
+  .question-text {
+    flex: 1;
+    font-size: 14px;
+    color: var(--gray-900);
+    line-height: 1.6;
+  }
+
+  .question-text .required {
+    color: #c0392b;
+    margin-left: 3px;
+  }
+
+  .rating-group {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  .rating-group input[type="radio"] { display: none; }
+
+  .rating-group label {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1.5px solid var(--gray-100);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--gray-400);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .rating-group label:hover {
+    border-color: var(--green-200);
+    color: var(--green-600);
+    background: var(--green-50);
+  }
+
+  .rating-group input[type="radio"]:checked + label {
+    background: var(--green-400);
+    border-color: var(--green-400);
+    color: white;
+  }
+
+  .rating-group input[type="radio"][value="1"]:checked + label { background: #e74c3c; border-color: #e74c3c; }
+  .rating-group input[type="radio"][value="2"]:checked + label { background: #e67e22; border-color: #e67e22; }
+  .rating-group input[type="radio"][value="3"]:checked + label { background: var(--amber-400); border-color: var(--amber-400); }
+  .rating-group input[type="radio"][value="4"]:checked + label { background: var(--teal-400); border-color: var(--teal-400); }
+  .rating-group input[type="radio"][value="5"]:checked + label { background: var(--green-400); border-color: var(--green-400); }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    padding: 1.5rem;
+  }
+
+  .info-grid.full { grid-template-columns: 1fr; }
+
+  @media (max-width: 560px) {
+    .info-grid { grid-template-columns: 1fr; }
+    .rating-group label { width: 30px; height: 30px; font-size: 12px; }
+    .question-row { gap: 10px; }
+  }
+
+  .field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .field-group label {
+    font-size: 13px;
+    color: var(--gray-600);
+    font-weight: 500;
+  }
+
+  .field-group input,
+  .field-group textarea,
+  .field-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text);
+    background: white;
+    transition: border-color 0.15s;
+    outline: none;
+  }
+
+  .field-group input:focus,
+  .field-group textarea:focus,
+  .field-group select:focus {
+    border-color: var(--green-400);
+    box-shadow: 0 0 0 3px rgba(99,153,34,0.1);
+  }
+
+  .field-group textarea { resize: vertical; min-height: 80px; }
+
+  .map-placeholder {
+    grid-column: 1 / -1;
+    background: var(--green-50);
+    border: 1.5px dashed var(--green-100);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: var(--green-600);
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .map-placeholder:hover {
+    background: var(--teal-50);
+    border-color: var(--teal-400);
+  }
+
+  .map-icon { font-size: 28px; margin-bottom: 8px; }
+  .map-placeholder p { margin-top: 4px; font-size: 12px; color: var(--muted); }
+
+  #map-embed {
+    grid-column: 1 / -1;
+    width: 100%;
+    height: 280px;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    display: none;
+  }
+
+  .submit-zone {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .score-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin-bottom: 1.5rem;
+  }
+
+  .score-item {
+    background: var(--green-50);
+    border: 1px solid var(--green-100);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .score-item .val {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--green-800);
+    font-family: 'Noto Serif TC', serif;
+  }
+
+  .score-item .cat {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .btn-submit {
+    background: linear-gradient(135deg, var(--green-600), var(--teal-600));
+    color: white;
+    border: none;
+    padding: 14px 40px;
+    border-radius: 100px;
+    font-size: 16px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(39,80,10,0.3); }
+  .btn-submit:active { transform: translateY(0); }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  .submit-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--green-800);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    white-space: nowrap;
+  }
+
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .loading-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.85);
+    z-index: 500;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .loading-overlay.active { display: flex; }
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--green-100);
+    border-top-color: var(--green-400);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 2rem 0;
+  }
+
+  .form-section-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 15px;
+    color: var(--green-900);
+    margin: 0 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .note-optional {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--gray-50);
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-weight: 400;
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-badge">🌲 ANFT 認證評估系統</div>
+  <h1>森林療癒步道場地自評表</h1>
+  <p>請依據實際場地狀況，針對各項指標進行客觀評分。評估結果將作為 ANFT 認證審查的初步參考依據。</p>
+  <div class="score-legend">
+    <span>1 = 完全不符合</span>
+    <span>2 = 部分符合</span>
+    <span>3 = 基本符合</span>
+    <span>4 = 良好符合</span>
+    <span>5 = 完全符合</span>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <label>填答進度</label>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-score" id="progressScore">0 / 0 題</div>
+</div>
+
+<div class="wrapper">
+
+  <!-- ===== 填寫者資料 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-green">👤</div>
+      <div>
+        <h2>填寫者資料</h2>
+        <p>請填寫負責評估的土地管理者或聯絡人資訊</p>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div class="field-group">
+        <label>姓名 <span style="color:#c0392b">*</span></label>
+        <input type="text" id="f_name" placeholder="請輸入您的姓名" required>
+      </div>
+      <div class="field-group">
+        <label>職稱 / 角色</label>
+        <input type="text" id="f_title" placeholder="例：場地主任、保育員">
+      </div>
+      <div class="field-group">
+        <label>手機 <span style="color:#c0392b">*</span></label>
+        <input type="tel" id="f_phone" placeholder="例：0912-345-678" required>
+      </div>
+      <div class="field-group">
+        <label>電子郵件 <span style="color:#c0392b">*</span></label>
+        <input type="email" id="f_email" placeholder="example@mail.com" required>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 場地資料 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-teal">📍</div>
+      <div>
+        <h2>場地基本資訊</h2>
+        <p>請提供申請認證之場地的基本資料</p>
+      </div>
+    </div>
+    <div class="info-grid">
+      <div class="field-group">
+        <label>場地名稱 <span style="color:#c0392b">*</span></label>
+        <input type="text" id="s_name" placeholder="場地或步道正式名稱" required>
+      </div>
+      <div class="field-group">
+        <label>場地類型</label>
+        <select id="s_type">
+          <option value="">-- 請選擇 --</option>
+          <option>國家公園 / 自然保護區</option>
+          <option>縣市公園</option>
+          <option>森林遊樂區</option>
+          <option>植物園</option>
+          <option>社區公園</option>
+          <option>私有地</option>
+          <option>其他</option>
+        </select>
+      </div>
+      <div class="field-group" style="grid-column: 1 / -1;">
+        <label>場地地址 / 位置描述 <span style="color:#c0392b">*</span></label>
+        <input type="text" id="s_address" placeholder="縣市、鄉鎮、詳細地址或地標描述" required>
+      </div>
+      <div class="field-group">
+        <label>場地總面積（公頃）</label>
+        <input type="number" id="s_area" placeholder="例：25.5" step="0.1" min="0">
+      </div>
+      <div class="field-group">
+        <label>步道總長度（公里）</label>
+        <input type="number" id="s_trail" placeholder="例：3.2" step="0.1" min="0">
+      </div>
+      <div class="field-group" style="grid-column: 1 / -1;">
+        <label>Google Maps 連結或座標</label>
+        <input type="text" id="s_mapurl" placeholder="貼入 Google Maps 分享連結或 GPS 座標（例：24.7875, 121.0073）" oninput="handleMapInput(this.value)">
+      </div>
+      <div class="map-placeholder" id="mapPlaceholder" onclick="document.getElementById('s_mapurl').focus()">
+        <div class="map-icon">🗺️</div>
+        <strong>場地地圖</strong>
+        <p>請在上方欄位貼入 Google Maps 連結，地圖將自動嵌入顯示</p>
+      </div>
+      <iframe id="map-embed" allowfullscreen loading="lazy"></iframe>
+      <div class="field-group" style="grid-column: 1 / -1;">
+        <label>場地補充說明</label>
+        <textarea id="s_desc" placeholder="場地特色、歷史背景、管理現況等補充資訊…"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== 一、設計考量 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-green">🛤️</div>
+      <div>
+        <h2>一、設計考量</h2>
+        <p>評估步道設計與場地配置是否符合森林療癒需求</p>
+      </div>
+      <div class="section-score-badge" id="badge-design">0 / 35</div>
+    </div>
+    <div id="section-design"></div>
+  </div>
+
+  <!-- ===== 二、生態系統健康 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-teal">🌿</div>
+      <div>
+        <h2>二、生態系統健康</h2>
+        <p>評估場地生態多樣性與自然環境品質</p>
+      </div>
+      <div class="section-score-badge" id="badge-eco">0 / 55</div>
+    </div>
+    <div id="section-eco"></div>
+  </div>
+
+  <!-- ===== 三、基礎設施 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-amber">🏗️</div>
+      <div>
+        <h2>三、基礎設施</h2>
+        <p>評估場地道路、停車、廁所、標示等硬體設施</p>
+      </div>
+      <div class="section-score-badge" id="badge-infra">0 / 30</div>
+    </div>
+    <div id="section-infra"></div>
+  </div>
+
+  <!-- ===== 四、安全性 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-green">🛡️</div>
+      <div>
+        <h2>四、安全性</h2>
+        <p>評估場地安全措施與緊急應變能力</p>
+      </div>
+      <div class="section-score-badge" id="badge-safety">0 / 30</div>
+    </div>
+    <div id="section-safety"></div>
+  </div>
+
+  <!-- ===== 五、無障礙可及性 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-teal">♿</div>
+      <div>
+        <h2>五、無障礙可及性</h2>
+        <p>評估場地對不同能力者的包容性與可及性</p>
+      </div>
+      <div class="section-score-badge" id="badge-access">0 / 15</div>
+    </div>
+    <div id="section-access"></div>
+  </div>
+
+  <!-- ===== 六、場地管理 ===== -->
+  <div class="section-card">
+    <div class="section-header">
+      <div class="section-icon icon-amber">📋</div>
+      <div>
+        <h2>六、場地管理</h2>
+        <p>評估管理單位的承諾、維護能力與合作意願</p>
+      </div>
+      <div class="section-score-badge" id="badge-mgmt">0 / 25</div>
+    </div>
+    <div id="section-mgmt"></div>
+  </div>
+
+  <!-- ===== 提交區 ===== -->
+  <div class="submit-zone">
+    <div class="form-section-title" style="justify-content: center; margin-bottom: 1.5rem;">
+      📊 自評分數總覽
+    </div>
+    <div class="score-summary" id="scoreSummary"></div>
+    <div style="text-align: center; font-size: 24px; font-weight: 600; color: var(--green-800); font-family: 'Noto Serif TC', serif; margin-bottom: 1.5rem;">
+      總分：<span id="totalScore">0</span> / <span id="totalMax">190</span> 分
+      （<span id="totalPct">0</span>%）
+    </div>
+    <button class="btn-submit" onclick="submitForm()">✉️ 提交自評表</button>
+    <p class="submit-note">提交後，評估結果將傳送至 ANFT 管理系統，我們將於 5 個工作天內與您聯繫。</p>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="spinner"></div>
+  <p style="color: var(--green-800); font-size: 14px;">正在提交，請稍候…</p>
+</div>
+
+<script>
+// ============================================================
+// 題目資料
+// ============================================================
+const SECTIONS = {
+  design: {
+    id: 'design',
+    questions: [
+      { id: 'design_1', text: '場地設施與自然環境和諧融合，視覺上具多樣性與美感', max: 5 },
+      { id: 'design_2', text: '步道寬度足供兩人並行（或至少單人通行並能避開植被）', max: 5 },
+      { id: 'design_3', text: '步道坡度平緩，不需費力攀爬，無跌倒風險', max: 5 },
+      { id: 'design_4', text: '場地設計充分降低跌倒、滑倒、碰撞等危險', max: 5 },
+      { id: 'design_5', text: '步道沿線設有足夠且安全的休憩場所', max: 5 },
+      { id: 'design_6', text: '場地內至少有 2 處（建議 4 處）可供 16 人圍圈的集合空間（直徑 ≥ 6 公尺）', max: 5 },
+      { id: 'design_7', text: '場地提供多樣化的視野景觀（林蔭、草地、水域、遠山等）', max: 5 },
+    ]
+  },
+  eco: {
+    id: 'eco',
+    questions: [
+      { id: 'eco_1', text: '場地以本土植物為主，生態環境自然健全', max: 5 },
+      { id: 'eco_2', text: '場地內有本土野生動物棲息，遊客可能遇見小型哺乳類動物', max: 5 },
+      { id: 'eco_3', text: '場地內有溪流、泉水、池塘等水源，水質清澈或生態良好', max: 5 },
+      { id: 'eco_4', text: '樹種多樣，涵蓋各年齡層樹木，並保留枯立木與倒木', max: 5 },
+      { id: 'eco_5', text: '林冠下有空間可個別親近樹木，有毒植物或障礙物稀少', max: 5 },
+      { id: 'eco_6', text: '林冠發育良好，遮蔭覆蓋地面達 60–70%', max: 5 },
+      { id: 'eco_7', text: '林下植被分布適當，提供開闊視線及探索空間，危險植物稀少', max: 5 },
+      { id: 'eco_8', text: '步道附近有易於進入的草地或林間空地', max: 5 },
+      { id: 'eco_9', text: '聲景以自然聲音為主，光害與噪音極少', max: 5 },
+      { id: 'eco_10', text: '積極管理外來入侵物種，採用生態友善方式', max: 5 },
+      { id: 'eco_11', text: '場地設有至少一處離道漫步區（≥ 40 公尺，可容納約 16 人分散活動）', max: 5 },
+    ]
+  },
+  infra: {
+    id: 'infra',
+    questions: [
+      { id: 'infra_1', text: '通往場地的道路全年可通行，適合各類車輛', max: 5 },
+      { id: 'infra_2', text: '停車空間充足，費用合理（如有收費）', max: 5 },
+      { id: 'infra_3', text: '廁所設施維護良好、整潔，步行 5 分鐘內可達，衛生用品齊全', max: 5 },
+      { id: 'infra_4', text: '標示清楚，協助訪客辨認入口、路線及危險警示（含多語言）', max: 5 },
+      { id: 'infra_5', text: '在步道入口或附近設有適合團體集合的場所', max: 5 },
+      { id: 'infra_6', text: '設有風雨遮蔽設施（如亭子、避雷安全區）', max: 5 },
+    ]
+  },
+  safety: {
+    id: 'safety',
+    questions: [
+      { id: 'safety_1', text: '溪流可安全穿越（有穩固踏腳石或附護欄橋樑），岸線安全', max: 5 },
+      { id: 'safety_2', text: '高風險位置設有穩固護欄或扶手，且未過度阻隔人與自然', max: 5 },
+      { id: 'safety_3', text: '步道沿線定期修剪有毒、有刺植物，有危險野生動物的區域已標示', max: 5 },
+      { id: 'safety_4', text: '危險樹木或不穩定枝幹已定期清除或修剪', max: 5 },
+      { id: 'safety_5', text: '場地內可通訊，緊急服務車輛可進入，緊急醫療可及時回應', max: 5 },
+      { id: 'safety_6', text: '犯罪事件罕見，執法單位可及時回應', max: 5 },
+    ]
+  },
+  access: {
+    id: 'access',
+    questions: [
+      { id: 'access_1', text: '設有身障停車位及無障礙坡道，費用對所有人合理', max: 5 },
+      { id: 'access_2', text: '廁所及設施符合無障礙設計（扶手、門把、寬度等）', max: 5 },
+      { id: 'access_3', text: '步道路面平坦夯實或鋪設，適合輪椅通行；設有 QR 碼或易讀地圖', max: 5 },
+    ]
+  },
+  mgmt: {
+    id: 'mgmt',
+    questions: [
+      { id: 'mgmt_1', text: '管理單位對森林療癒有真誠熱忱，願意做出長期承諾', max: 5 },
+      { id: 'mgmt_2', text: '管理單位積極與保育、教育、社區等組織建立夥伴關係', max: 5 },
+      { id: 'mgmt_3', text: '具備充足資源進行場地設施的持續維護', max: 5 },
+      { id: 'mgmt_4', text: '垃圾管理良好，場地整潔，垃圾桶充足且責任明確', max: 5 },
+      { id: 'mgmt_5', text: '工作人員友善、易聯繫，偏遠場地有人員隨行及急救裝備', max: 5 },
+    ]
+  }
+};
+
+const SECTION_META = {
+  design: { label: '設計考量', badgeId: 'badge-design', containerId: 'section-design' },
+  eco:    { label: '生態系統', badgeId: 'badge-eco',    containerId: 'section-eco' },
+  infra:  { label: '基礎設施', badgeId: 'badge-infra',  containerId: 'section-infra' },
+  safety: { label: '安全性',   badgeId: 'badge-safety', containerId: 'section-safety' },
+  access: { label: '無障礙',   badgeId: 'badge-access', containerId: 'section-access' },
+  mgmt:   { label: '場地管理', badgeId: 'badge-mgmt',   containerId: 'section-mgmt' },
+};
+
+// ============================================================
+// ★ 請在此處貼入您的 Google Apps Script Web App URL ★
+// ============================================================
+const SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+
+// ============================================================
+// 建立題目 HTML
+// ============================================================
+function buildQuestions() {
+  Object.keys(SECTIONS).forEach(sKey => {
+    const sec = SECTIONS[sKey];
+    const meta = SECTION_META[sKey];
+    const container = document.getElementById(meta.containerId);
+    let html = '';
+    sec.questions.forEach((q, idx) => {
+      html += `
+        <div class="question-row">
+          <div class="question-text">${idx + 1}. ${q.text} <span class="required">*</span></div>
+          <div class="rating-group">
+            ${[1,2,3,4,5].map(v => `
+              <input type="radio" name="${q.id}" id="${q.id}_${v}" value="${v}" onchange="updateScores()">
+              <label for="${q.id}_${v}">${v}</label>
+            `).join('')}
+          </div>
+        </div>`;
+    });
+    container.innerHTML = html;
+  });
+}
+
+// ============================================================
+// 分數計算
+// ============================================================
+function getScore(qId) {
+  const checked = document.querySelector(`input[name="${qId}"]:checked`);
+  return checked ? parseInt(checked.value) : 0;
+}
+
+function getSectionScore(sKey) {
+  return SECTIONS[sKey].questions.reduce((sum, q) => sum + getScore(q.id), 0);
+}
+
+function getSectionMax(sKey) {
+  return SECTIONS[sKey].questions.reduce((sum, q) => sum + q.max, 0);
+}
+
+function getAnsweredCount(sKey) {
+  return SECTIONS[sKey].questions.filter(q => document.querySelector(`input[name="${q.id}"]:checked`)).length;
+}
+
+function getTotalAnswered() {
+  return Object.keys(SECTIONS).reduce((sum, k) => sum + getAnsweredCount(k), 0);
+}
+
+function getTotalQuestions() {
+  return Object.keys(SECTIONS).reduce((sum, k) => sum + SECTIONS[k].questions.length, 0);
+}
+
+function getTotalMax() {
+  return Object.keys(SECTIONS).reduce((sum, k) => sum + getSectionMax(k), 0);
+}
+
+function getTotalScore() {
+  return Object.keys(SECTIONS).reduce((sum, k) => sum + getSectionScore(k), 0);
+}
+
+function updateScores() {
+  Object.keys(SECTIONS).forEach(sKey => {
+    const score = getSectionScore(sKey);
+    const max = getSectionMax(sKey);
+    const badge = document.getElementById(SECTION_META[sKey].badgeId);
+    if (badge) badge.textContent = `${score} / ${max}`;
+  });
+
+  const total = getTotalScore();
+  const totalMax = getTotalMax();
+  const answered = getTotalAnswered();
+  const allQ = getTotalQuestions();
+
+  document.getElementById('totalScore').textContent = total;
+  document.getElementById('totalMax').textContent = totalMax;
+  document.getElementById('totalPct').textContent = Math.round(total / totalMax * 100);
+
+  // Progress
+  const pct = Math.round(answered / allQ * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressScore').textContent = `${answered} / ${allQ} 題`;
+
+  // Summary
+  const summaryEl = document.getElementById('scoreSummary');
+  summaryEl.innerHTML = Object.keys(SECTIONS).map(sKey => {
+    const s = getSectionScore(sKey);
+    const m = getSectionMax(sKey);
+    return `<div class="score-item">
+      <div class="val">${s}/${m}</div>
+      <div class="cat">${SECTION_META[sKey].label}</div>
+    </div>`;
+  }).join('');
+}
+
+// ============================================================
+// 地圖嵌入
+// ============================================================
+function handleMapInput(val) {
+  const frame = document.getElementById('map-embed');
+  const placeholder = document.getElementById('mapPlaceholder');
+  const coordMatch = val.match(/(-?\d{1,3}\.\d+)[,\s]+(-?\d{1,3}\.\d+)/);
+  const urlMatch = val.match(/https?:\/\/[^\s]+/);
+
+  if (coordMatch) {
+    const lat = coordMatch[1], lng = coordMatch[2];
+    frame.src = `https://maps.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
+    frame.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else if (urlMatch) {
+    const encoded = encodeURIComponent(urlMatch[0]);
+    frame.src = `https://maps.google.com/maps?q=${encoded}&output=embed`;
+    frame.style.display = 'block';
+    placeholder.style.display = 'none';
+  } else {
+    frame.style.display = 'none';
+    placeholder.style.display = 'block';
+  }
+}
+
+// ============================================================
+// 提交表單
+// ============================================================
+function showToast(msg, duration = 3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), duration);
+}
+
+function validateForm() {
+  const required = [
+    { id: 'f_name', label: '填寫者姓名' },
+    { id: 'f_phone', label: '手機號碼' },
+    { id: 'f_email', label: '電子郵件' },
+    { id: 's_name', label: '場地名稱' },
+    { id: 's_address', label: '場地地址' },
+  ];
+  for (const f of required) {
+    if (!document.getElementById(f.id).value.trim()) {
+      showToast(`❌ 請填寫「${f.label}」`);
+      document.getElementById(f.id).focus();
+      return false;
+    }
+  }
+  const answered = getTotalAnswered();
+  const total = getTotalQuestions();
+  if (answered < total) {
+    showToast(`⚠️ 尚有 ${total - answered} 題未完成評分，請確認後再提交`);
+    return false;
+  }
+  return true;
+}
+
+function collectData() {
+  const scores = {};
+  Object.keys(SECTIONS).forEach(sKey => {
+    SECTIONS[sKey].questions.forEach(q => {
+      scores[q.id] = getScore(q.id);
+    });
+    scores[`${sKey}_total`] = getSectionScore(sKey);
+    scores[`${sKey}_max`] = getSectionMax(sKey);
+  });
+
+  return {
+    timestamp: new Date().toISOString(),
+    f_name: document.getElementById('f_name').value.trim(),
+    f_title: document.getElementById('f_title').value.trim(),
+    f_phone: document.getElementById('f_phone').value.trim(),
+    f_email: document.getElementById('f_email').value.trim(),
+    s_name: document.getElementById('s_name').value.trim(),
+    s_type: document.getElementById('s_type').value,
+    s_address: document.getElementById('s_address').value.trim(),
+    s_area: document.getElementById('s_area').value,
+    s_trail: document.getElementById('s_trail').value,
+    s_mapurl: document.getElementById('s_mapurl').value.trim(),
+    s_desc: document.getElementById('s_desc').value.trim(),
+    total_score: getTotalScore(),
+    total_max: getTotalMax(),
+    total_pct: Math.round(getTotalScore() / getTotalMax() * 100),
+    ...scores
+  };
+}
+
+async function submitForm() {
+  if (!validateForm()) return;
+
+  const data = collectData();
+  const overlay = document.getElementById('loadingOverlay');
+  overlay.classList.add('active');
+
+  try {
+    await fetch(SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    });
+    overlay.classList.remove('active');
+    showToast('✅ 自評表已成功提交！我們將盡快與您聯繫', 5000);
+    document.querySelector('.btn-submit').disabled = true;
+    document.querySelector('.btn-submit').textContent = '✅ 已提交';
+  } catch (err) {
+    overlay.classList.remove('active');
+    showToast('❌ 提交失敗，請稍後再試或聯絡管理員', 4000);
+    console.error(err);
+  }
+}
+
+// ============================================================
+// 初始化
+// ============================================================
+buildQuestions();
+updateScores();
+</script>
+</body>
+</html>
